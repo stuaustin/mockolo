@@ -148,9 +148,9 @@ class MockoloTestCase: XCTestCase {
                 let output = (try? String(contentsOf: URL(fileURLWithPath: self.defaultDstFilePath), encoding: .utf8)) ?? ""
                 let outputContents = output.components(separatedBy:  .whitespacesAndNewlines).filter{!$0.isEmpty}
                 let fixtureContents = formattedDstContent.components(separatedBy: .whitespacesAndNewlines).filter{!$0.isEmpty}
-                #if TEST
+//                #if TEST
                 print(output)
-                #endif
+//                #endif
                 XCTAssert(fixtureContents == outputContents)
         })
     }

@@ -410,6 +410,7 @@ extension SubscriptDeclSyntax {
                                          funcsWithArgsHistory: [],
                                          customModifiers: [:],
                                          modelDescription: self.description,
+                                         globalActorAttribute: nil,
                                          processed: processed)
         return subscriptModel
     }
@@ -424,6 +425,8 @@ extension FunctionDeclSyntax {
         let genericTypeParams = self.genericParameterClause?.parameters.compactMap { $0.model(inInit: false) } ?? []
         let genericWhereClause = self.genericWhereClause?.description
 
+        let asyncOrReasync = self.signature.effectSpecifiers?.asyncSpecifier?.text
+
         let funcmodel = MethodModel(name: self.name.description,
                                     typeName: self.signature.returnClause?.type.description ?? "",
                                     kind: .funcKind,
@@ -433,13 +436,14 @@ extension FunctionDeclSyntax {
                                     genericWhereClause: genericWhereClause,
                                     params: params,
                                     throwsOrRethrows: self.signature.effectSpecifiers?.throwsSpecifier?.text,
-                                    asyncOrReasync: self.signature.effectSpecifiers?.asyncSpecifier?.text,
+                                    asyncOrReasync: asyncOrReasync,
                                     isStatic: isStatic,
                                     offset: self.offset,
                                     length: self.length,
                                     funcsWithArgsHistory: funcsWithArgsHistory ?? [],
                                     customModifiers: customModifiers ?? [:],
                                     modelDescription: self.description,
+                                    globalActorAttribute: asyncOrReasync != nil ? "MainActor" : nil,
                                     processed: processed)
         return funcmodel
     }
@@ -481,6 +485,7 @@ extension InitializerDeclSyntax {
                            funcsWithArgsHistory: [],
                            customModifiers: [:],
                            modelDescription: self.description,
+                           globalActorAttribute: nil,
                            processed: processed)
     }
 
